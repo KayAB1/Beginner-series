@@ -184,31 +184,31 @@
 //1 strncpy
 
 //实现
-char* my_strncpy(char*dest,const char*src,size_t num)
-{
-    char* ret=dest;
-	while(num&&(*dest++=*src++))
-	{
-		num--;
-	}
-	if(num)
-	{
-		while(--num)
-		{
-			*dest++='\0';
-
-		}
-	}
-	return ret;
-}
-int main()
-{
-	char arr1[]="abcdef";
-	char arr2[]="bit";
-	printf("%s\n",my_strncpy(arr1,arr2,5));//会考虑到目标空间的大小，相对安全
-
-	return 0;
-}
+//char* my_strncpy(char*dest,const char*src,size_t num)
+//{
+//    char* ret=dest;
+//	while(num&&(*dest++=*src++))
+//	{
+//		num--;
+//	}
+//	if(num)
+//	{
+//		while(--num)
+//		{
+//			*dest++='\0';
+//
+//		}
+//	}
+//	return ret;
+//}
+//int main()
+//{
+//	char arr1[]="abcdef";
+//	char arr2[]="bit";
+//	printf("%s\n",my_strncpy(arr1,arr2,5));//会考虑到目标空间的大小，相对安全
+//
+//	return 0;
+//}
 
 //strncpy知识总结
 //1 将num个字符从源字符串拷贝目标空间
@@ -217,11 +217,12 @@ int main()
 
 //******************************************************************************************************************
 
-//3 strcat //字符串追加
+//2 strncat //字符串追加
 
-//char*my_strcat(char*dest,const char*src)
+//char*my_strncat(char*dest,const char*src,size_t num)
 //{
 //	char*ret=dest;
+//	int i=0;
 //	/*assert(dest!=NULL);
 //	assert(src!=NULL);*/
 //	assert(dest&&src);//如果指针为空指针就是为假-0
@@ -229,22 +230,169 @@ int main()
 //	{
 //		dest++;
 //	}
-//	while(*dest++=*src++)
+//	dest--;
+//	while(num--)
 //	{
-//		;
+//		if(!(*dest++=*src++));
+//		{
+//			return ret;
+//		}
 //	}
+//	*dest='\0';
 //	return ret;
 //}
 //
 //int main()
 //{
-//	char arr1[30]="hello";
-//	//char arr1[30]="hello\0xxxxxxxxxx";//为了更好的显示，arr2中的'\0'也拷贝过去了
+//	/*char arr1[30]="hello";*/
+//	char arr1[30]="hello\0xxxxxxxxxx";//为了更好的显示，arr2中的'\0'也拷贝过去了
 //	char arr2[]="world";
-//	printf("%s\n",my_strcat(arr1,arr2));
+//	printf("%s\n",my_strncat(arr1,arr2,7));
 //	return 0;
 //}
 
-//strcat知识点总结
+//strncat知识点总结
+//1 将相应个数的源字符串拷贝到目标空间后会默认再加一个'\0'
+//2 当源字符串小于num的时候，只拷贝源字符串，不用补num位
+
+//******************************************************************************************************************
+
+////strncmp
+//int my_strncmp(const char*str1,const char*str2,size_t num)
+//{
+//	assert(str1&&str2);
+//模拟实现
+//
+//}
+//
+//
+//int main()
+//{
+//	char*p1="abcdef";
+//	char*p2="abqew";
+//	//printf("%d\n",strcmp(p1,p2));
+//	printf("%d",my_strncmp(p1,p2,4));
+//	return 0;
+//}
 
 
+//strncmp知识点总结
+
+
+//******************************************************************************************************************
+
+//strstr//字符串查找
+//有KMP算法也可以实现strstr的功能
+//char*my_strstr(const char*p1,const char*p2)//第一个字符串不断以新的起始位置与第二个字符串的起始位置进行比较
+//{
+//	const char*s1=p1;
+//	const char*s2=p2;
+//	const char*cur=p1;
+//	assert(p1&&p2);
+//	if(!(*p2))
+//	{
+//		return (char*)p1;
+//	}
+//
+//	while(*cur)//被查找的字符串不为空指针
+//	{
+//		s1=cur;//第一个字符串不断以新的起始位置与第二个字符串的起始位置进行比较
+//		s2=p2;
+//		while((*s1!='\0')&&(*s2!='\0')&&(*s1==*s2))//(*s1&&*s2&&!(*s1-*s2))
+//		{
+//
+//			s1++;
+//			s2++;
+//
+//		}
+//		if(*s2=='\0')
+//		{
+//			return (char*)cur;//找到子串
+//
+//		}
+//
+//
+//		cur++;
+//	}
+//	return NULL;//找不到子串
+//
+//
+//}
+//
+//int main()
+//{
+//	char*p1="abbbcdef";
+//	char*p2="bbc";
+//	/*char*ret=strstr(p1,p2);*/
+//
+//	char*ret=my_strstr(p1,p2);
+//	if(ret==NULL)
+//	{
+//		printf("找不到子串");
+//	}
+//	else
+//		printf("%s",ret);
+//	return 0;
+//}
+
+
+//******************************************************************************************************************
+
+//strtok//字符串分割函数
+
+//int main()
+//{
+//	char arr[]="1622@qq.com";
+//	char *sep="@.";//以@和.作为分割符
+//	char buf[1024]={0};
+//	char*ret=NULL;
+//	strcmp(buf,arr);
+//	for(ret=strtok(arr,sep);ret!=NULL;ret=strtok(NULL,sep))//使用方法
+//	{
+//		printf("%s ",ret);
+//	}
+//	printf("\n");
+//	return 0;
+//}
+
+//******************************************************************************************************************
+
+//strerror//错误报告函数
+
+//#include<errno.h>
+//
+//int main()
+//{
+//	//打开文件
+//	FILE*pf=fopen("text.txt","r");
+//	if(pf==NULL)
+//	{
+//		printf("%s",strerror(errno));//errno由库函数维护--为错误码每个错误码对应着一个错误信息（当库函数发生错误的时候都会产生一个错误码（errno））
+//	}
+//	else
+//	{
+//		printf("open file success\n");
+//	}
+//
+//	return 0;
+//}
+
+
+//******************************************************************************************************************
+
+//内存操作函数
+
+//1 memcpy//内存拷贝适用于各种类型的数组
+
+int main()
+{
+	int arr[]={1,2,3,4,5};
+	int arr2[6]={0};
+	int i=0;
+	while(i<5)
+	{
+		printf("%d ",arr[i]);
+		i++;
+	}
+	return 0;
+}
